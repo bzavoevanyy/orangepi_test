@@ -63,7 +63,7 @@ public class App {
         // has been provided, then lookup the pin by address
         Pin pin = CommandArgumentParser.getPin(
                 OrangePiPin.class,    // pin provider class to obtain pin instance from
-                OrangePiPin.GPIO_01,  // default pin if no pin argument found
+                OrangePiPin.GPIO_04,  // default pin if no pin argument found
                 args);                 // argument array to search in
 
         // by default we will use gpio pin PULL-UP; however, if an argument
