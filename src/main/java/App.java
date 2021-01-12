@@ -88,21 +88,25 @@ public class App {
 
         // display pin state
         console.emptyLine();
-//        console.println(" [" + input.toString() + "] digital state is: " + ConsoleColor.conditional(
-//                input.getState().isHigh(), // conditional expression
-//                ConsoleColor.GREEN,        // positive conditional color
-//                ConsoleColor.RED,          // negative conditional color
-//                input.getState()));
-//        console.emptyLine();
+        console.println(" [" + input.toString() + "] digital state is: " + ConsoleColor.conditional(
+                input.getState().isHigh(), // conditional expression
+                ConsoleColor.GREEN,        // positive conditional color
+                ConsoleColor.RED,          // negative conditional color
+                input.getState()));
+        console.emptyLine();
         final GpioPinDigitalOutput output = gpio.provisionDigitalOutputPin(OrangePiPin.GPIO_01, "output", PinState.HIGH);
         output.setShutdownOptions(true);
-
-        input.addListener((GpioPinListenerDigital) event -> {
-            // display pin state on console
-            System.out.println(" --> GPIO PIN STATE CHANGE: " + event.getPin() + " = " + event.getState());
-        });
+        boolean state = false;
         while (true) {
-            Thread.sleep(500);
+            if (input.isLow()) {
+                state = !state;
+            }
+            if (state) {
+                output.high();
+            } else {
+                output.low();
+            }
+            Thread.sleep(1000);
         }
         // stop all GPIO activity/threads by shutting down the GPIO controller
         // (this method will forcefully shutdown all GPIO monitoring threads and scheduled tasks)
