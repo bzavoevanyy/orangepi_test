@@ -110,7 +110,7 @@ public class App {
                 output.low();
                 thread.interrupt();
             }
-            TimeUnit.SECONDS.sleep(5);
+            TimeUnit.MILLISECONDS.sleep(5);
         }
         // stop all GPIO activity/threads by shutting down the GPIO controller
         // (this method will forcefully shutdown all GPIO monitoring threads and scheduled tasks)
