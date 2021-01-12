@@ -31,6 +31,9 @@
 import com.pi4j.io.gpio.*;
 import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
 import com.pi4j.io.gpio.event.GpioPinListenerDigital;
+import com.pi4j.platform.Platform;
+import com.pi4j.platform.PlatformAlreadyAssignedException;
+import com.pi4j.platform.PlatformManager;
 
 /**
  * This example code demonstrates how to setup a listener
@@ -40,14 +43,15 @@ import com.pi4j.io.gpio.event.GpioPinListenerDigital;
  */
 public class ListenGpioExample {
 
-    public static void main(String args[]) throws InterruptedException {
+    public static void main(String args[]) throws InterruptedException, PlatformAlreadyAssignedException {
+        PlatformManager.setPlatform(Platform.ORANGEPI);
         System.out.println("<--Pi4J--> GPIO Listen Example ... started.");
 
         // create gpio controller
         final GpioController gpio = GpioFactory.getInstance();
 
         // provision gpio pin #02 as an input pin with its internal pull down resistor enabled
-        final GpioPinDigitalInput myButton = gpio.provisionDigitalInputPin(RaspiPin.GPIO_02, PinPullResistance.PULL_DOWN);
+        final GpioPinDigitalInput myButton = gpio.provisionDigitalInputPin(OrangePiPin.GPIO_01, PinPullResistance.PULL_UP);
 
         // set shutdown state for this input pin
         myButton.setShutdownOptions(true);
