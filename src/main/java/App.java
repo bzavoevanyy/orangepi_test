@@ -98,13 +98,14 @@ public class App {
         output.setShutdownOptions(true);
         boolean state = false;
         Runnable task = Player::play;
-        Thread thread = new Thread(task);
+        Thread thread = null;
         while (true) {
             if (input.isLow()) {
                 state = !state;
             }
             if (state) {
                 output.high();
+                thread = new Thread(task);
                 if (!thread.isAlive()) {
                     thread.start();
                 }
