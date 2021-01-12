@@ -111,8 +111,12 @@ public class App {
                 }
             } else {
                 output.low();
-                thread.interrupt();
-                thread.join();
+                try {
+                    thread.interrupt();
+                    thread.join();
+                } catch (InterruptedException | NullPointerException ignored) {
+
+                }
             }
             Thread.sleep(1000);
         }
