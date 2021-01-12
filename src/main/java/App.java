@@ -1,12 +1,12 @@
 import com.pi4j.io.gpio.*;
-import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
-import com.pi4j.io.gpio.event.GpioPinListenerDigital;
 import com.pi4j.platform.Platform;
 import com.pi4j.platform.PlatformAlreadyAssignedException;
 import com.pi4j.platform.PlatformManager;
 import com.pi4j.util.CommandArgumentParser;
 import com.pi4j.util.Console;
 import com.pi4j.util.ConsoleColor;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * This example code demonstrates how to perform simple GPIO
@@ -97,16 +97,20 @@ public class App {
         final GpioPinDigitalOutput output = gpio.provisionDigitalOutputPin(OrangePiPin.GPIO_01, "output", PinState.HIGH);
         output.setShutdownOptions(true);
         boolean state = false;
+        Runnable task = Player::play;
+        Thread thread = new Thread(task);
         while (true) {
             if (input.isLow()) {
                 state = !state;
             }
             if (state) {
                 output.high();
+                thread.start();
             } else {
                 output.low();
+                thread.interrupt();
             }
-            Thread.sleep(1000);
+            TimeUnit.SECONDS.sleep(5);
         }
         // stop all GPIO activity/threads by shutting down the GPIO controller
         // (this method will forcefully shutdown all GPIO monitoring threads and scheduled tasks)
