@@ -21,7 +21,7 @@ public class App {
      * This example program accepts an optional argument for specifying the GPIO pin (by number)
      * to use with this GPIO listener example. If no argument is provided, then GPIO #1 will be used.
      * -- EXAMPLE: "--pin 4" or "-p 0".
-     *
+     * <p>
      * [ARGUMENT/OPTION "--pull (up|down|off)" | "-l (up|down|off)" | "--up" | "--down" ]
      * This example program accepts an optional argument for specifying pin pull resistance.
      * Supported values: "up|down" (or simply "1|0").   If no value is specified in the command
@@ -105,10 +105,13 @@ public class App {
             }
             if (state) {
                 output.high();
-                thread.start();
+                if (!thread.isAlive()) {
+                    thread.start();
+                }
             } else {
                 output.low();
                 thread.interrupt();
+                thread.join();
             }
             TimeUnit.MILLISECONDS.sleep(5);
         }
