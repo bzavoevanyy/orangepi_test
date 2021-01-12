@@ -105,9 +105,14 @@ public class App {
             }
             if (state) {
                 output.high();
-                thread = new Thread(task);
-                if (!thread.isAlive()) {
-                    thread.start();
+
+                try {
+                    if (!thread.isAlive()) {
+                        thread = new Thread(task);
+                        thread.start();
+                    }
+                } catch (NullPointerException ignored) {
+
                 }
             } else {
                 output.low();
