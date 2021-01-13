@@ -94,36 +94,31 @@ public class App {
                 ConsoleColor.RED,          // negative conditional color
                 input.getState()));
         console.emptyLine();
-        final GpioPinDigitalOutput output = gpio.provisionDigitalOutputPin(OrangePiPin.GPIO_01, "output", PinState.HIGH);
-        output.setShutdownOptions(true);
-        boolean state = false;
-        Runnable task = Player::play;
+        final GpioPinDigitalOutput ledPlayerIndicator = gpio.provisionDigitalOutputPin(OrangePiPin.GPIO_01, "ledPlayerIndicator", PinState.LOW);
+        final GpioPinDigitalOutput relayController = gpio.provisionDigitalOutputPin(OrangePiPin.GPIO_05, "relayController", PinState.LOW);
+        //output.setShutdownOptions(true);
+        Runnable task = () -> Player.play(relayController);
         Thread thread = new Thread(task);
         while (true) {
             if (input.isLow()) {
-                state = !state;
-            }
-            if (state) {
-                output.high();
-
+                ledPlayerIndicator.high();
                 try {
                     if (!thread.isAlive()) {
                         thread = new Thread(task);
                         thread.start();
                     }
-                } catch (NullPointerException ignored) {
-
-                }
-            } else {
-                output.low();
-                try {
-                    thread.interrupt();
-                    thread.join();
-                } catch (InterruptedException | NullPointerException ignored) {
-
-                }
+                } catch (NullPointerException ignored) { }
             }
-            Thread.sleep(1000);
+            if (input.isHigh()) {
+                ledPlayerIndicator.low();
+                try {
+                    if (thread.isAlive()) {
+                        thread.interrupt();
+                        thread.join();
+                    }
+                } catch (InterruptedException | NullPointerException ignored) {}
+            }
+            Thread.sleep(500);
         }
         // stop all GPIO activity/threads by shutting down the GPIO controller
         // (this method will forcefully shutdown all GPIO monitoring threads and scheduled tasks)
