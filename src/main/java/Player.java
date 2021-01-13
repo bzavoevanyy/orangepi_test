@@ -21,13 +21,13 @@ public class Player {
                 relayController.high();
                 p.waitFor();
                 System.out.println("Stop playing");
-
+                relayController.low();
                 TimeUnit.SECONDS.sleep(10);
             } catch (IOException | InterruptedException e) {
                 System.out.println("Player was interrupted");
                 Thread.currentThread().interrupt();
             }
-            relayController.low();
+
         }
     }
 

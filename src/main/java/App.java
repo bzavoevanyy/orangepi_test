@@ -111,6 +111,7 @@ public class App {
             }
             if (input.isHigh()) {
                 ledPlayerIndicator.low();
+                relayController.low();
                 try {
                     if (thread.isAlive()) {
                         thread.interrupt();
