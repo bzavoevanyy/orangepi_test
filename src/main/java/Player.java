@@ -30,5 +30,12 @@ public class Player {
 
         }
     }
+
+    public static void play(int i) {
+        System.out.println(i);
+        while (!Thread.currentThread().isInterrupted()) {
+
+        }
+    }
 }
 
