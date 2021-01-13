@@ -12,7 +12,7 @@ public class Player {
                     new ProcessBuilder("ffplay", "-autoexit", "-nodisp", "bip.mp3");
             File log = new File("log");
             pb.redirectErrorStream(true);
-            pb.redirectOutput(ProcessBuilder.Redirect.appendTo(log));
+            //pb.redirectOutput(ProcessBuilder.Redirect.appendTo(log));
             try {
                 Process p = pb.start();
                 assert pb.redirectInput() == ProcessBuilder.Redirect.PIPE;
@@ -27,13 +27,6 @@ public class Player {
                 System.out.println("Player was interrupted");
                 Thread.currentThread().interrupt();
             }
-
-        }
-    }
-
-    public static void play(int i) {
-        System.out.println(i);
-        while (!Thread.currentThread().isInterrupted()) {
 
         }
     }
