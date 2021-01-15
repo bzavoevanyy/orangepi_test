@@ -9,7 +9,7 @@ public class Player {
         while (!Thread.currentThread().isInterrupted()) {
             System.out.println("Start playing");
             ProcessBuilder pb =
-                    new ProcessBuilder("ffplay", "-autoexit", "-nodisp", "bip.mp3");
+                    new ProcessBuilder("ffplay", "-autoexit", "-nodisp", "bip1.mp3");
             File log = new File("log");
             pb.redirectErrorStream(true);
             //pb.redirectOutput(ProcessBuilder.Redirect.appendTo(log));
@@ -22,7 +22,7 @@ public class Player {
                 p.waitFor();
                 System.out.println("Stop playing");
                 relayController.low();
-                TimeUnit.SECONDS.sleep(10);
+                TimeUnit.SECONDS.sleep(20);
             } catch (IOException | InterruptedException e) {
                 System.out.println("Player was interrupted");
                 Thread.currentThread().interrupt();
